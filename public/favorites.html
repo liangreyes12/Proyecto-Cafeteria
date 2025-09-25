@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis Favoritos ❤️ - MoodBrew</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="output.css">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-yellow-100 via-pink-100 to-purple-100 flex flex-col">
+
+  <header class="p-4 bg-white shadow-md flex justify-between items-center">
+    <h1 class="text-xl font-bold">Mis Favoritos ❤️</h1>
+    <a href="index.html" class="px-4 py-2 rounded-lg bg-rose-500 text-white hover:bg-rose-600 transition">Volver</a>
+  </header>
+
+  <main class="p-6 flex-1">
+    <div id="favoritesList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  </main>
+
+  <footer class="p-4 text-center text-gray-600">
+    <p>Hecho con ☕ por MoodBrew</p>
+  </footer>
+
+  <script>
+    async function loadFavorites() {
+      const res = await fetch("/api/favorites");
+      const container = document.getElementById("favoritesList");
+      container.innerHTML = "";
+
+      if (!res.ok) {
+        Swal.fire("Error", "No se pudieron cargar los favoritos", "error");
+        return;
+      }
+
+      const data = await res.json();
+      if (data.length === 0) {
+        container.innerHTML = `<p class="text-center text-gray-600 col-span-full">No tienes favoritos aún.</p>`;
+        return;
+      }
+
+      data.forEach(fav => {
+        const card = document.createElement("div");
+        card.className = "glass p-4 rounded-xl shadow-md flex flex-col gap-2 hover:scale-[1.02] transition";
+        card.innerHTML = `
+          <h3 class="text-lg font-bold">${fav.name} ${fav.emoji}</h3>
+          <p class="text-gray-700 text-sm">${fav.desc}</p>
+          <button class="deleteBtn mt-auto px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"><i class="fas fa-trash"></i> Eliminar</button>
+        `;
+
+        card.querySelector(".deleteBtn").addEventListener("click", async () => {
+          const confirm = await Swal.fire({
+            title: "¿Eliminar?",
+            text: `¿Eliminar "${fav.name}" de favoritos?`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sí, eliminar",
+            cancelButtonText: "Cancelar"
+          });
+
+          if (confirm.isConfirmed) {
+            const del = await fetch(`/api/favorites/${fav.id}`, { method: "DELETE" });
+            if (del.ok) {
+              Swal.fire("Eliminado", "Favorito eliminado correctamente", "success");
+              card.remove();
+              if (!container.children.length) {
+                container.innerHTML = `<p class="text-center text-gray-600 col-span-full">No tienes favoritos aún.</p>`;
+              }
+            }
+          }
+        });
+
+        container.appendChild(card);
+      });
+    }
+
+    loadFavorites();
+  </script>
+</body>
+</html>

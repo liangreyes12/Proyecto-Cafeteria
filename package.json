@@ -1,0 +1,13 @@
+{
+  "name": "moodbrew-cafe",
+  "version": "1.0.0",
+  "description": "App de café por estado de ánimo",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["cafe", "mood", "webapp"],
+  "author": "MoodBrew",
+  "license": "MIT"
+}

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MoodBrew ☕</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- SweetAlert2 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.32/sweetalert2.all.min.js"></script>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-pink-100 via-purple-100 to-blue-100">
+
+  <!-- Header -->
+  <header class="w-full p-4 flex justify-between items-center glass shadow-md">
+    <div class="flex items-center gap-2">
+      <i class="fas fa-mug-hot text-2xl text-rose-600"></i>
+      <h1 class="text-2xl font-bold bg-gradient-to-r from-rose-600 to-purple-600 bg-clip-text text-transparent">MoodBrew</h1>
+    </div>
+    <nav class="flex gap-3">
+      <button id="favoritesBtn" class="hidden px-4 py-2 rounded-xl bg-pink-500 text-white hover:bg-pink-600 transition duration-300 shadow-lg">
+        <i class="fas fa-heart"></i> Favoritos
+      </button>
+      <button id="loginBtn" class="px-4 py-2 rounded-xl bg-rose-500 text-white hover:bg-rose-600 transition duration-300 shadow-lg">
+        <i class="fas fa-sign-in-alt"></i> Login
+      </button>
+      <button id="logoutBtn" class="hidden px-4 py-2 rounded-xl bg-gray-700 text-white hover:bg-gray-900 transition duration-300 shadow-lg">
+        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+      </button>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 flex flex-col">
+    <!-- Hero Section -->
+    <section id="heroSection" class="flex flex-col items-center justify-center flex-1 text-center p-6">
+      <div class="fade-in">
+        <h2 class="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+          ¿Cuál es tu mood hoy?
+        </h2>
+        <p class="text-gray-700 mb-10 text-lg max-w-2xl mx-auto">
+          Selecciona tu estado de ánimo y te recomendaremos el café perfecto para acompañar tu día ☕✨
+        </p>
+      </div>
+
+      <!-- Mood Cards -->
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-6xl fade-in">
+        <div data-mood="feliz" class="mood-card glass p-8 rounded-3xl cursor-pointer text-center shadow-xl bg-gradient-to-br from-orange-200 to-pink-200 hover:from-orange-300 hover:to-pink-300">
+          <span class="text-6xl block mb-4">😊</span>
+          <h3 class="text-xl font-semibold text-gray-800">Feliz</h3>
+          <p class="text-sm text-gray-600 mt-2">Celebra tu alegría</p>
+        </div>
+        <div data-mood="tranquilo" class="mood-card glass p-8 rounded-3xl cursor-pointer text-center shadow-xl bg-gradient-to-br from-blue-200 to-indigo-200 hover:from-blue-300 hover:to-indigo-300">
+          <span class="text-6xl block mb-4">🧘‍♀️</span>
+          <h3 class="text-xl font-semibold text-gray-800">Tranquilo</h3>
+          <p class="text-sm text-gray-600 mt-2">Encuentra tu paz</p>
+        </div>
+        <div data-mood="energetico" class="mood-card glass p-8 rounded-3xl cursor-pointer text-center shadow-xl bg-gradient-to-br from-yellow-200 to-orange-300 hover:from-yellow-300 hover:to-orange-400">
+          <span class="text-6xl block mb-4">⚡</span>
+          <h3 class="text-xl font-semibold text-gray-800">Energético</h3>
+          <p class="text-sm text-gray-600 mt-2">Activa tu poder</p>
+        </div>
+        <div data-mood="productivo" class="mood-card glass p-8 rounded-3xl cursor-pointer text-center shadow-xl bg-gradient-to-br from-green-200 to-emerald-200 hover:from-green-300 hover:to-emerald-300">
+          <span class="text-6xl block mb-4">🚀</span>
+          <h3 class="text-xl font-semibold text-gray-800">Productivo</h3>
+          <p class="text-sm text-gray-600 mt-2">Alcanza tus metas</p>
+        </div>
+        <div data-mood="romantico" class="mood-card glass p-8 rounded-3xl cursor-pointer text-center shadow-xl bg-gradient-to-br from-pink-200 to-rose-300 hover:from-pink-300 hover:to-rose-400">
+          <span class="text-6xl block mb-4">💖</span>
+          <h3 class="text-xl font-semibold text-gray-800">Romántico</h3>
+          <p class="text-sm text-gray-600 mt-2">Vive el amor</p>
+        </div>
+        <div data-mood="nocturno" class="mood-card glass p-8 rounded-3xl cursor-pointer text-center shadow-xl bg-gradient-to-br from-indigo-800 to-purple-900 text-white hover:from-indigo-700 hover:to-purple-800">
+          <span class="text-6xl block mb-4">🌙</span>
+          <h3 class="text-xl font-semibold">Nocturno</h3>
+          <p class="text-sm text-gray-300 mt-2">Abraza la noche</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Result Section -->
+    <section id="resultSection" class="hidden p-6 w-full max-w-4xl mx-auto slide-up">
+      <div class="glass rounded-3xl p-8 shadow-2xl">
+        <div class="flex flex-col md:flex-row items-center gap-8">
+          <div class="w-full md:w-1/2">
+            <img id="coffeeImg" src="" alt="Café recomendado" class="w-full h-64 object-cover rounded-2xl shadow-lg">
+          </div>
+          <div class="w-full md:w-1/2 text-center md:text-left">
+            <div class="flex items-center justify-center md:justify-start gap-3 mb-4">
+              <span id="coffeeEmoji" class="text-5xl"></span>
+              <h3 id="coffeeName" class="text-3xl font-bold text-gray-800"></h3>
+            </div>
+            <p id="coffeeDesc" class="text-gray-700 mb-6 text-lg leading-relaxed"></p>
+            <div class="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+              <button id="favBtn" class="px-6 py-3 bg-gradient-to-r from-rose-500 to-pink-500 text-white rounded-xl hover:from-rose-600 hover:to-pink-600 transition duration-300 shadow-lg transform hover:scale-105">
+                <i class="fas fa-heart"></i> Guardar Favorito
+              </button>
+              <button id="newRecommendationBtn" class="px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 text-white rounded-xl hover:from-purple-600 hover:to-indigo-600 transition duration-300 shadow-lg transform hover:scale-105">
+                <i class="fas fa-sync-alt"></i> Otra Recomendación
+              </button>
+              <button id="backBtn" class="px-6 py-3 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-xl hover:from-gray-600 hover:to-gray-700 transition duration-300 shadow-lg transform hover:scale-105">
+                <i class="fas fa-arrow-left"></i> Volver
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Favorites Section -->
+    <section id="favoritesSection" class="hidden p-6 w-full max-w-6xl mx-auto">
+      <div class="glass rounded-3xl p-8 shadow-2xl">
+        <div class="flex justify-between items-center mb-8">
+          <h2 class="text-3xl font-bold text-gray-800">
+            <i class="fas fa-heart text-rose-500"></i> Mis Favoritos
+          </h2>
+          <button id="backToHomeBtn" class="px-6 py-3 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-xl hover:from-gray-600 hover:to-gray-700 transition duration-300 shadow-lg">
+            <i class="fas fa-home"></i> Inicio
+          </button>
+        </div>
+        <div id="favoritesList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="p-6 text-center text-gray-600">
+    <div class="glass rounded-2xl p-4 inline-block">
+      <p class="flex items-center justify-center gap-2">
+        Hecho con <i class="fas fa-heart text-red-500"></i> y <i class="fas fa-mug-hot text-amber-600"></i> por MoodBrew
+      </p>
+    </div>
+  </footer>
+
+  <!-- Auth Modal -->
+  <div id="authModal" class="fixed inset-0 modal hidden flex items-center justify-center z-50">
+    <div class="glass rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl">
+      <h2 id="authTitle" class="text-2xl font-bold mb-6 text-center text-gray-800">Iniciar Sesión</h2>
+      <form id="authForm" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Usuario</label>
+          <input id="username" type="text" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-rose-500 focus:border-transparent transition duration-200" required>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
+          <input id="password" type="password" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-rose-500 focus:border-transparent transition duration-200" required>
+        </div>
+        <div class="flex gap-3">
+          <button type="submit" id="authAction" class="flex-1 bg-gradient-to-r from-rose-500 to-pink-500 text-white py-3 px-4 rounded-xl hover:from-rose-600 hover:to-pink-600 transition duration-300 shadow-lg">
+            Ingresar
+          </button>
+          <button type="button" id="closeModal" class="px-4 py-3 bg-gray-500 text-white rounded-xl hover:bg-gray-600 transition duration-300">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </form>
+      <p class="text-center mt-4 text-sm">
+        <button id="toggleAuth" class="text-rose-500 hover:text-rose-600 transition duration-200">
+          ¿No tienes cuenta? Regístrate
+        </button>
+      </p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
